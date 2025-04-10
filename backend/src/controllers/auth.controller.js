@@ -49,11 +49,33 @@ export const signup = async (req, res) => {
 };
 
 export const login = async (req, res) => {
-  const {email, password} = req.body
-  const user = User.findOne({email})
-  
-    if (user){
-        
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      res.status(400).json({ message: "Invalid Credentials" });
+    }
+
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+    
+    if (!isPasswordCorrect) {
+      res.status(400).json({ message: "Invalid Credentials" });
+    }
+
+    generateToken(user._id, res); // if password is correct then generate the jwt
+
+    res.status(200).json({
+      _id: user._id,
+      fullName: user.fullName,
+      email: user.email,
+      profilePic: user.profilePic,
+    });
+
+  } catch (error) {
+    console.log("Error when logging in", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
