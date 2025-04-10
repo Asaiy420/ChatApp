@@ -16,7 +16,7 @@ const userSchema = mongoose.Schema(
     },
     password: {
       type: String,
-      required: ["Password is required to continue", true],
+      required: true,
       minLength: 8,
     },
     profilePic: {
@@ -27,7 +27,7 @@ const userSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-const Uaer = mongoose.model("User", userSchema);
+const User = mongoose.model("User", userSchema);
 
 
 export default User;
