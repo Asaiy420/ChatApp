@@ -11,7 +11,7 @@ const io = new Server(server, {
   },
 });
 
-//use to store online users
+//use to store online users in array
 const userSocketMap = {}; //{userId: socketId} stored like this
 
 io.on("connection", (socket) => {
